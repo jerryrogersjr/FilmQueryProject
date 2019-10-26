@@ -43,10 +43,10 @@ public class FilmQueryApp {
 			switch (userInput) {
 			
 			case "1":
-				System.out.println("Enter the film ID you are looking for: ");
+				
 				break;
 			case "2":
-				System.out.println("Search the film you are looking for by keyword: ");
+				
 				break;
 			case "3":
 				System.out.println("Thanks for looking around.\nGoodbye!");
