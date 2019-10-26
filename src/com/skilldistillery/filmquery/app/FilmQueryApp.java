@@ -49,11 +49,11 @@ public class FilmQueryApp {
 				
 				break;
 			case "3":
-				System.out.println("Thanks for looking around.\nGoodbye!");
+				System.out.print("Thanks for looking around.\nGoodbye!");
 				System.exit(0);
 				break;
 			default:
-				System.err.println("Wrong Entry, please enter a numerical selection from menu.\n");
+				System.err.print("Wrong Entry, please enter a numerical selection from menu.\n");
 				break;
 			}
 

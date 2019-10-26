@@ -22,27 +22,35 @@ public class DatabaseAccessorObject implements DatabaseAccessor {
 	@Override
 	public Film findFilmById(int filmId) throws SQLException {
 
-		System.out.println("Enter the film ID you are looking for: ");
-
 		Film film = null;
 
-		Connection conn = DriverManager.getConnection(URL, user, pass);
-		String sql = "select title, release_year, rating, description from film";
+		try {
 
-		PreparedStatement stmt = conn.prepareStatement(sql);
-		stmt.setInt(1, filmId);
-		ResultSet filmResult = stmt.executeQuery();
+			Connection conn = DriverManager.getConnection(URL, user, pass);
+			String sql = "SELECT flm.title, flm.release_year, flm.rating, flm.description, lang.name, cast.actors"
+					+ "FROM film flm JOIN language lang ON flm.language_id = lang.id"
+					+ "JOIN film_list cast ON flm.id = cast.FID" + "WHERE flm.id = ?";
 
-		if (filmResult.next()) {
-			System.out.println(filmResult.getString("title") + " " + filmResult.getInt("release_year") + " "
-					+ filmResult.getString("rating") + " " + filmResult.getString("description"));
+			PreparedStatement stmt = conn.prepareStatement(sql);
+			stmt.setInt(1, filmId);
+			ResultSet filmResult = stmt.executeQuery();
 
+			if (filmResult.next()) {
+				System.out.println(filmResult.getString("title") + " " + filmResult.getInt("release_year") + " "
+						+ filmResult.getString("rating") + " " + filmResult.getString("description"));
+
+			}
+
+			filmResult.close();
+
+			stmt.close();
+
+			conn.close();
+
+		} catch (SQLException e) {
+			System.err.print("Empty Set test"); // revise message if this works on empty set
+			e.printStackTrace();
 		}
-		filmResult.close();
-		stmt.close();
-
-		conn.close();
-
 		return film;
 	}
 
@@ -83,6 +91,7 @@ public class DatabaseAccessorObject implements DatabaseAccessor {
 			conn.close();
 
 		} catch (SQLException e) {
+			System.err.print("Empty Set test"); // revise message if this works on empty set
 			e.printStackTrace();
 		}
 		return actors;
