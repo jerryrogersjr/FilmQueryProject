@@ -10,11 +10,6 @@ public class DatabaseAccessorObject implements DatabaseAccessor {
 	@Override
 	public Film findFilmById(int filmId) {
 		return null;
-
-		// TODO
-//  public Actor findActorById(int actorId);
-//  public List<Actor> findActorsByFilmId(int filmId);
-
 	}
 
 	@Override
