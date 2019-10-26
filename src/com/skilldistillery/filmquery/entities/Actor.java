@@ -5,6 +5,7 @@ public class Actor {
 	private int id;
 	private String firstName;
 	private String lastName;
+	// Actor List ??
 
 	public Actor(int id, String firstName, String lastName) {
 		super();
