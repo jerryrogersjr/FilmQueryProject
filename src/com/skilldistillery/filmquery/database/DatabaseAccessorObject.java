@@ -15,87 +15,8 @@ public class DatabaseAccessorObject implements DatabaseAccessor {
 
 	// All JDBC code here
 	private static final String URL = "jdbc:mysql://localhost:3306/sdvid?useSSL=false";
-
 	String user = "student";
 	String pass = "student";
-
-	@Override
-	public Film findFilmById(int filmId) throws SQLException {
-
-		Film film = null;
-
-		try {
-
-			Connection conn = DriverManager.getConnection(URL, user, pass);
-			String sql = "SELECT flm.title, flm.release_year, flm.rating, flm.description, lang.name, cast.actors"
-					+ "FROM film flm JOIN language lang ON flm.language_id = lang.id"
-					+ "JOIN film_list cast ON flm.id = cast.FID" + "WHERE flm.id = ?";
-
-			PreparedStatement stmt = conn.prepareStatement(sql);
-			stmt.setInt(1, filmId);
-			ResultSet filmResult = stmt.executeQuery();
-
-			if (filmResult.next()) {
-				System.out.println(filmResult.getString("title") + " " + filmResult.getInt("release_year") + " "
-						+ filmResult.getString("rating") + " " + filmResult.getString("description"));
-
-			}
-
-			filmResult.close();
-
-			stmt.close();
-
-			conn.close();
-
-		} catch (SQLException e) {
-			System.err.print("Empty Set test"); // revise message if this works on empty set
-			e.printStackTrace();
-		}
-		return film;
-	}
-
-	@Override
-	public Actor findActorById(int actorId) {
-		Actor actor = null;
-		// TODO Auto-generated method stub
-		return actor;
-	}
-
-	@Override
-	public List<Actor> findActorsByFilmId(int filmId) {
-
-		List<Actor> actors = new ArrayList<>();
-		Actor actor = null;
-
-		try {
-
-			Connection conn = DriverManager.getConnection(URL, user, pass);
-			String sql = "SELECT act.id, act.first_name, act.last_name"
-					+ "FROM actor act JOIN film_actor fa ON act.id = fa.actor_id" + "WHERE film_id = ?";
-
-			PreparedStatement stmt = conn.prepareStatement(sql);
-			stmt.setInt(1, filmId);
-			ResultSet actorsResult = stmt.executeQuery();
-
-			while (actorsResult.next()) {
-
-				System.out.println("Actor ID is " + actorsResult.getInt("id") + ", "
-						+ actorsResult.getString("first_name") + " " + actorsResult.getString("last_name"));
-				actors.add(actor);
-			}
-
-			actorsResult.close();
-
-			stmt.close();
-
-			conn.close();
-
-		} catch (SQLException e) {
-			System.err.print("Empty Set test"); // revise message if this works on empty set
-			e.printStackTrace();
-		}
-		return actors;
-	}
 
 	static {
 		try {
@@ -104,6 +25,162 @@ public class DatabaseAccessorObject implements DatabaseAccessor {
 			e.printStackTrace();
 		}
 
+	}
+
+	@Override
+	public Film findFilmById(int filmId) {
+
+		Film film = null;
+		List<Actor> actorList = new ArrayList<>();
+
+		String sql = "SELECT film.id, film.title, film.release_year, film.rating, film.description, lang.name, actorList.actors"
+				+ "FROM film film JOIN language lang ON film.language_id = language.id"
+				+ "JOIN film_list actorList ON film.id = actorList.FID" + "WHERE film.id = ?";
+		try {
+
+			Connection conn = DriverManager.getConnection(URL, user, pass);
+			PreparedStatement stmt = conn.prepareStatement(sql);
+			stmt.setInt(1, filmId);
+			ResultSet fr = stmt.executeQuery();
+
+			if (fr.next()) {
+
+				actorList = findActorsByFilmId(filmId);
+
+				film = new Film(fr.getInt("id"), fr.getString("title"), fr.getString("description"),
+						fr.getInt("release_year"), fr.getInt("language_id"), fr.getInt("rental_duration"),
+						fr.getInt("length"), fr.getDouble("replacement_cost"), fr.getString("rating"),
+						fr.getString("special_feautures"), actorList, fr.getString("lang.name"));
+			}
+
+			fr.close();
+
+			stmt.close();
+
+			conn.close();
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+
+		return film;
+	}
+
+	@Override
+	public Actor findActorById(int actorId) {
+		Actor actor = null;
+		String sql = "SELECT act.id, act.first_name, act.last_name FROM actor act WHERE id = ?";
+
+		try {
+
+			Connection conn = DriverManager.getConnection(URL, user, pass);
+
+			PreparedStatement stmt = conn.prepareStatement(sql);
+			stmt.setInt(1, actorId);
+			ResultSet ar = stmt.executeQuery();
+
+			if (ar.next()) {
+
+				int actId = ar.getInt("act.id");
+				String firstName = ar.getString("act.first_name");
+				String lastName = ar.getString("act.last_name");
+
+				actor = new Actor(actId, firstName, lastName);
+			}
+
+			ar.close();
+
+			stmt.close();
+
+			conn.close();
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+
+		return actor;
+	}
+
+	@Override
+	public List<Actor> findActorsByFilmId(int filmId) {
+
+		Actor actor = null;
+		List<Actor> actorList = new ArrayList<>();
+
+		String sql = "SELECT act.id, act.first_name, act.last_name"
+				+ "FROM actor act JOIN film_actor fa ON act.id = fa.actor_id" + "WHERE film_id = ?";
+
+		try {
+
+			Connection conn = DriverManager.getConnection(URL, user, pass);
+
+			PreparedStatement stmt = conn.prepareStatement(sql);
+			stmt.setInt(1, filmId);
+			ResultSet ar = stmt.executeQuery();
+
+			while (ar.next()) {
+				int actorId = ar.getInt("act.id");
+				String firstName = ar.getString("act.first_name");
+				String lastName = ar.getString("act.last_name");
+
+				actor = new Actor(actorId, firstName, lastName);
+
+				actorList.add(actor);
+
+			}
+
+			ar.close();
+
+			stmt.close();
+
+			conn.close();
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return actorList;
+	}
+
+	@Override
+	public List<Film> findFilmByKeyword(String keyword) {
+//		System.out.println("***");
+		Film film = null;
+		List<Film> filmList = new ArrayList<>();
+		List<Actor> actorList = new ArrayList<>();
+
+		String sql = "SELECT film.title, film.description, film.release_year,film.rating, language.name FROM film JOIN language ON film.language_id = language.id "
+				+ "WHERE film.title LIKE ?" + "OR film.description LIKE ?";
+		try {
+
+			Connection conn = DriverManager.getConnection(URL, user, pass);
+
+			PreparedStatement stmt = conn.prepareStatement(sql);
+			stmt.setString(1, "%" + keyword + "%");
+			stmt.setString(2, "%" + keyword + "%");
+			ResultSet fr = stmt.executeQuery();
+
+			while (fr.next()) {
+				actorList = findActorsByFilmId(fr.getInt("film.id"));
+				film = new Film(fr.getInt("id"), fr.getString("title"), fr.getString("description"),
+						fr.getInt("release_year"), fr.getInt("language_id"), fr.getInt("rental_duration"),
+						fr.getInt("length"), fr.getDouble("replacement_cost"), fr.getString("rating"),
+						fr.getString("special_feautures"), actorList, fr.getString("language.name"));
+
+				filmList.add(film);
+
+			}
+
+			fr.close();
+
+			stmt.close();
+
+			conn.close();
+
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return filmList;
 	}
 
 }

@@ -15,10 +15,12 @@ public class Film {
 	private double replacementCost;
 	private String rating;
 	private String specialFeatures;
-	private List<Actor> actorList = new ArrayList<>();
+	private List<Actor> actorList;
+	private String language;
 
 	public Film(int id, String title, String description, int releaseYear, int languageId, int rentalDuration,
-			int length, double replacementCost, String rating, String specialFeatures) {
+			int length, double replacementCost, String rating, String specialFeatures, List<Actor> actorList,
+			String language) {
 		super();
 		this.id = id;
 		this.title = title;
@@ -30,11 +32,15 @@ public class Film {
 		this.replacementCost = replacementCost;
 		this.rating = rating;
 		this.specialFeatures = specialFeatures;
+		this.actorList = actorList;
+		this.language = language;
 	}
 
 	public Film() {
 		super();
 	}
+
+
 
 	public int getId() {
 		return id;
@@ -124,20 +130,28 @@ public class Film {
 		this.actorList = actorList;
 	}
 
+	public String getLanguage() {
+		return language;
+	}
+
+	public void setLanguage(String language) {
+		this.language = language;
+	}
+
 	@Override
 	public String toString() {
-		return "Film [id=" + id + ", title=" + title + ", description=" + description + ", releaseYear=" + releaseYear
-				+ ", languageId=" + languageId + ", rentalDuration=" + rentalDuration + ", length=" + length
-				+ ", replacementCost=" + replacementCost + ", rating=" + rating + ", specialFeatures=" + specialFeatures
-				+ "]";
+		return "Film [title=" + title + ", description=" + description + ", releaseYear=" + releaseYear + ", rating="
+				+ rating + ", actorList=" + actorList + ", language=" + language + "]";
 	}
 
 	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
+		result = prime * result + ((actorList == null) ? 0 : actorList.hashCode());
 		result = prime * result + ((description == null) ? 0 : description.hashCode());
 		result = prime * result + id;
+		result = prime * result + ((language == null) ? 0 : language.hashCode());
 		result = prime * result + languageId;
 		result = prime * result + length;
 		result = prime * result + ((rating == null) ? 0 : rating.hashCode());
@@ -160,12 +174,22 @@ public class Film {
 		if (getClass() != obj.getClass())
 			return false;
 		Film other = (Film) obj;
+		if (actorList == null) {
+			if (other.actorList != null)
+				return false;
+		} else if (!actorList.equals(other.actorList))
+			return false;
 		if (description == null) {
 			if (other.description != null)
 				return false;
 		} else if (!description.equals(other.description))
 			return false;
 		if (id != other.id)
+			return false;
+		if (language == null) {
+			if (other.language != null)
+				return false;
+		} else if (!language.equals(other.language))
 			return false;
 		if (languageId != other.languageId)
 			return false;
@@ -194,5 +218,7 @@ public class Film {
 			return false;
 		return true;
 	}
+	
+	
 
 }

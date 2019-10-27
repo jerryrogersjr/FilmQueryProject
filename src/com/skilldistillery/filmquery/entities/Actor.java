@@ -1,11 +1,11 @@
 package com.skilldistillery.filmquery.entities;
 
+
 public class Actor {
 
 	private int id;
 	private String firstName;
 	private String lastName;
-	
 
 	public Actor(int id, String firstName, String lastName) {
 		super();
@@ -42,9 +42,10 @@ public class Actor {
 		this.lastName = lastName;
 	}
 
+	
 	@Override
 	public String toString() {
-		return "Actor [id=" + id + ", firstName=" + firstName + ", lastName=" + lastName + "]";
+		return "Actor [firstName=" + firstName + ", lastName=" + lastName + "]";
 	}
 
 	@Override
@@ -80,5 +81,7 @@ public class Actor {
 			return false;
 		return true;
 	}
+
+
 
 }
