@@ -107,6 +107,7 @@ public class DatabaseAccessorObject implements DatabaseAccessor {
 
 		Actor actor = null;
 		List<Actor> actorList = new ArrayList<>();
+		actorList = null;
 
 		String sql = "SELECT act.id, act.first_name, act.last_name"
 				+ " FROM actor act JOIN film_actor film ON act.id = film.actor_id" + "WHERE film.id = ?";
@@ -146,12 +147,8 @@ public class DatabaseAccessorObject implements DatabaseAccessor {
 	public List<Film> findFilmByKeyword(String keyword) {
 
 		Film film = null;
-		List<Film> filmListKeyword = new ArrayList<>();
+		List<Film> filmListKeyword = null;
 
-//		String sql = "SELECT film.title, film.description, film.release_year, film.rating, "
-//				+ " language.name FROM film JOIN language ON film.language_id = language.id "
-//				+ " WHERE film.title LIKE ? OR film.description LIKE ?";
-		
 		String sql = "SELECT film.id, film.title, film.release_year, film.rating, film.description, lang.name, flist.actors"
 				+ " FROM film film JOIN language lang ON film.language_id = lang.id"
 				+ " JOIN film_list flist ON film.id = flist.FID WHERE film.title LIKE ? OR film.description LIKE ?";
@@ -165,7 +162,6 @@ public class DatabaseAccessorObject implements DatabaseAccessor {
 			ResultSet fr = stmt.executeQuery();
 
 			while (fr.next()) {
-//				actorList = findActorsByFilmId(fr.getInt("id"));
 				film = new Film();
 				film.setId(fr.getInt("id"));
 				film.setTitle(fr.getString("title"));
@@ -174,10 +170,8 @@ public class DatabaseAccessorObject implements DatabaseAccessor {
 				film.setRating(fr.getString("rating"));
 				film.setLanguage(fr.getString("lang.name"));
 				film.setActors(fr.getString("actors"));
-
+				filmListKeyword = new ArrayList<>();
 				filmListKeyword.add(film);
-				
-				
 
 			}
 
@@ -191,8 +185,9 @@ public class DatabaseAccessorObject implements DatabaseAccessor {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
+
 		return filmListKeyword;
+
 	}
 
 }

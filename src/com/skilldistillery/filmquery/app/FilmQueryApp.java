@@ -49,25 +49,28 @@ public class FilmQueryApp {
 
 			case "1":
 				System.out.println("Enter the film ID you'd like to see: ");
-				String idInput =  input.next();
+				String idInput = input.next();
 				try {
 					film = db.findFilmById(Integer.parseInt(idInput));
 				} catch (NumberFormatException e) {
 					System.err.println("Please enter an appropriate ID NUMBER!");
 				}
+				
 				if (film == null) {
-					System.out.println("No film found");
+					System.err.println("\nNo film found for that ID\n");
 				} else
 					System.out.println(film);
+				
 				break;
 			case "2":
 				System.out.println("Enter keyword(s) to search for films: ");
 				String keyword = input.next();
+
 				filmList = db.findFilmByKeyword(keyword);
+
 				if (filmList == null) {
-					System.out.println("No film found");
-				} 
-				else
+					System.err.println("\nNo film found for that keyword entry\n");
+				} else
 					System.out.println(filmList);
 
 				break;
