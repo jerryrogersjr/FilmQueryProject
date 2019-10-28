@@ -10,7 +10,7 @@ import com.skilldistillery.filmquery.entities.Film;
 
 public class FilmQueryApp {
 
-	private Film film = new Film();
+	private Film film;
 	private List<Film> filmList = new ArrayList<>();
 	DatabaseAccessor db = new DatabaseAccessorObject();
 
@@ -57,10 +57,10 @@ public class FilmQueryApp {
 
 				if (film == null) {
 					System.err.println("\nNo film found for that ID\n");
-				} else
+				} else {
 					System.out.println(film);
 //				submenu(input); //
-
+				}
 				break;
 			case "2":
 				System.out.println("Enter keyword(s) to search for films: ");
