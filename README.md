@@ -69,7 +69,7 @@ When a film is displayed, the list of actors in its cast is displayed along with
 
 ### Lessons Learned
 
-Well, I still fill like I'm behind in all but I am progressing forward
+Well, I still feel like I'm behind in all but I am progressing forward
 and learning. In terms of this Film Query, I think probably my biggest
 rabbit hole was the errors getting thrown on mySql syntax. However, I
 would put the Exact same syntax in the command line, run, and success.
@@ -85,4 +85,4 @@ there would be an error with the '+' not leaving a space. So as you look
 above, instead of 'lang.id JOIN film_list' it would crunch to
 'lang.idJOIN film_list'. Notice the intentional space after the ' + " '
 now. It's the little things, but like I said above, I am in school to
-learn so whala!
+learn so voila!
