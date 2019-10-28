@@ -29,7 +29,6 @@ public class FilmQueryApp {
 	}
 
 	private void startUserInterface(Scanner input) {
-		// menu goes here
 
 		do {
 
@@ -55,12 +54,13 @@ public class FilmQueryApp {
 				} catch (NumberFormatException e) {
 					System.err.println("Please enter an appropriate ID NUMBER!");
 				}
-				
+
 				if (film == null) {
 					System.err.println("\nNo film found for that ID\n");
 				} else
 					System.out.println(film);
-				
+//				submenu(input);
+
 				break;
 			case "2":
 				System.out.println("Enter keyword(s) to search for films: ");
@@ -70,6 +70,7 @@ public class FilmQueryApp {
 
 				if (filmList == null) {
 					System.err.println("\nNo film found for that keyword entry\n");
+
 				} else
 					System.out.println(filmList);
 
@@ -86,4 +87,23 @@ public class FilmQueryApp {
 		} while (true);
 
 	}
+
+//	private void submenu(Scanner input) {
+//		// TODO Auto-generated method stub
+//		System.out.println("Would you like to see all column details of this movie?");
+//		System.out.println("1: Yes");
+//		System.out.println("2: No");
+//		String idInput = input.next();
+//
+//		try {
+//			film = db.findFilmById(Integer.parseInt(idInput));
+//		} catch (NumberFormatException e) {
+//			System.err.println("Please enter an appropriate NUMBER!");
+//		}
+//
+////			System.out.println(film);
+//		startUserInterface(input);
+//
+//	}
+
 }
