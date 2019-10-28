@@ -68,7 +68,7 @@ public class FilmQueryApp {
 
 				filmList = db.findFilmByKeyword(keyword);
 
-				if (filmList == null) {
+				if (filmList.isEmpty()) {
 					System.err.println("\nNo film found for that keyword entry\n");
 
 				} else

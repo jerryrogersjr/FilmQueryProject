@@ -148,7 +148,7 @@ public class DatabaseAccessorObject implements DatabaseAccessor {
 
 		Film film = null;
 		List<Film> filmListKeyword = new ArrayList<>();
-//		filmListKeyword = new ArrayList<>();
+//		filmListKeyword = null;
 
 		String sql = "SELECT film.id, film.title, film.release_year, film.rating, film.description, lang.name, flist.actors"
 				+ " FROM film film JOIN language lang ON film.language_id = lang.id"
