@@ -54,9 +54,11 @@ When a film is displayed, the list of actors in its cast is displayed along with
 
 ### Technologies Used
 MacBook Pro
-Eclipse
-Atom
 
+Eclipse
+
+Atom
+  
 Java
 mySql
 Command Line
