@@ -147,7 +147,8 @@ public class DatabaseAccessorObject implements DatabaseAccessor {
 	public List<Film> findFilmByKeyword(String keyword) {
 
 		Film film = null;
-		List<Film> filmListKeyword = null;
+		List<Film> filmListKeyword = new ArrayList<>();
+//		filmListKeyword = new ArrayList<>();
 
 		String sql = "SELECT film.id, film.title, film.release_year, film.rating, film.description, lang.name, flist.actors"
 				+ " FROM film film JOIN language lang ON film.language_id = lang.id"
@@ -170,7 +171,6 @@ public class DatabaseAccessorObject implements DatabaseAccessor {
 				film.setRating(fr.getString("rating"));
 				film.setLanguage(fr.getString("lang.name"));
 				film.setActors(fr.getString("actors"));
-				filmListKeyword = new ArrayList<>();
 				filmListKeyword.add(film);
 
 			}
