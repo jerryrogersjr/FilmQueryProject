@@ -140,7 +140,7 @@ public class Film {
 	@Override
 	public String toString() {
 		return "\nFilm Title = " + title + "\nDescription = " + description + "\nReleaseYear = " + releaseYear
-				+ "\nRating = " + rating + "\nLanguage = " + language + "\nActors = " + actors + "\n";
+				+ "\nRating = " + rating + "\nLanguage = " + language + "\nCast = " + actors + "\n";
 	}
 
 	public String getActors() {

@@ -49,8 +49,12 @@ public class FilmQueryApp {
 
 			case "1":
 				System.out.println("Enter the film ID you'd like to see: ");
-				int idInput = input.nextInt();
-				film = db.findFilmById(idInput);
+				String idInput =  input.next();
+				try {
+					film = db.findFilmById(Integer.parseInt(idInput));
+				} catch (NumberFormatException e) {
+					System.err.println("Please enter an appropriate ID NUMBER!");
+				}
 				if (film == null) {
 					System.out.println("No film found");
 				} else
@@ -72,7 +76,7 @@ public class FilmQueryApp {
 				System.exit(0);
 				break;
 			default:
-				System.err.print("Wrong Entry, please enter a numerical selection from menu.\n");
+				System.err.print("Wrong Entry, please enter an appropriate selection.\n");
 				break;
 			}
 

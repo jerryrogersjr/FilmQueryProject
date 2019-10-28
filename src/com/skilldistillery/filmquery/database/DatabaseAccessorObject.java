@@ -176,6 +176,8 @@ public class DatabaseAccessorObject implements DatabaseAccessor {
 				film.setActors(fr.getString("actors"));
 
 				filmListKeyword.add(film);
+				
+				
 
 			}
 
@@ -189,6 +191,7 @@ public class DatabaseAccessorObject implements DatabaseAccessor {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		
 		return filmListKeyword;
 	}
 
