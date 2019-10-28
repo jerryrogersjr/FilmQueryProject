@@ -62,7 +62,8 @@ public class FilmQueryApp {
 				filmList = db.findFilmByKeyword(keyword);
 				if (filmList == null) {
 					System.out.println("No film found");
-				} else
+				} 
+				else
 					System.out.println(filmList);
 
 				break;
