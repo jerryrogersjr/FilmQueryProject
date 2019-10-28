@@ -1,6 +1,5 @@
 package com.skilldistillery.filmquery.entities;
 
-
 public class Actor {
 
 	private int id;
@@ -42,7 +41,6 @@ public class Actor {
 		this.lastName = lastName;
 	}
 
-	
 	@Override
 	public String toString() {
 		return "Actor FirstName = " + firstName + " LastName = " + lastName;
@@ -81,7 +79,5 @@ public class Actor {
 			return false;
 		return true;
 	}
-
-
 
 }

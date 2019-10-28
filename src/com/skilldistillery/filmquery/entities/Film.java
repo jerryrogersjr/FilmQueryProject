@@ -14,7 +14,7 @@ public class Film {
 	private double replacementCost;
 	private String rating;
 	private String specialFeatures;
-//	private List<Actor> actorList;
+//	private List<Actor> actorList; 
 	private String language;
 	private String actors;
 
@@ -224,6 +224,5 @@ public class Film {
 			return false;
 		return true;
 	}
-
 
 }
