@@ -5,8 +5,10 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Scanner;
 
 import com.skilldistillery.filmquery.entities.Actor;
 import com.skilldistillery.filmquery.entities.Film;
@@ -17,6 +19,7 @@ public class DatabaseAccessorObject implements DatabaseAccessor {
 	private static final String URL = "jdbc:mysql://localhost:3306/sdvid?useSSL=false";
 	String user = "student";
 	String pass = "student";
+	static Scanner sc = new Scanner(System.in);
 
 	static {
 		try {
@@ -50,7 +53,7 @@ public class DatabaseAccessorObject implements DatabaseAccessor {
 				film.setRating(fr.getString("flm.rating"));
 				film.setLanguage(fr.getString("lang.name"));
 				film.setCast(findActorsByFilmId(filmId));
-				
+//				film.setCast(findActorsByFilmId(fr.getInt("film.id")));
 			}
 
 			fr.close();
@@ -80,12 +83,11 @@ public class DatabaseAccessorObject implements DatabaseAccessor {
 			ResultSet ar = stmt.executeQuery();
 
 			if (ar.next()) {
-				actor = new Actor(ar.getInt("id"), ar.getString("first_name"), ar.getString("last_name"));
-//				actor.setId(ar.getInt("id"));
-//				actor.setFirstName(ar.getString("first_name"));
-//				actor.setLastName(ar.getString("last_name"));
-				
-				
+				actor = new Actor();
+				actor.setId(ar.getInt("id"));
+				actor.setFirstName(ar.getString("first_name"));
+				actor.setLastName(ar.getString("last_name"));
+
 			}
 
 			ar.close();
@@ -106,7 +108,7 @@ public class DatabaseAccessorObject implements DatabaseAccessor {
 
 		Actor actor = null;
 		List<Actor> actorList = new ArrayList<>();
-		
+
 		String sql = "SELECT * FROM actor JOIN film_actor ON actor.id = film_actor.actor_id "
 				+ " JOIN film on film_actor.film_id = film.id WHERE film.id = ?";
 
@@ -123,7 +125,7 @@ public class DatabaseAccessorObject implements DatabaseAccessor {
 				actor.setId(ar.getInt("id"));
 				actor.setFirstName(ar.getString("first_name"));
 				actor.setLastName(ar.getString("last_name"));
-				
+				actor.setCast(actorList);
 				actorList.add(actor);
 
 			}
@@ -145,9 +147,7 @@ public class DatabaseAccessorObject implements DatabaseAccessor {
 
 		Film film = null;
 		List<Film> filmListKeyword = new ArrayList<>();
-//		List<Actor> actors = new ArrayList<>();
-		String sql = "SELECT *"
-				+ " FROM film film JOIN language lang ON film.language_id = lang.id"
+		String sql = "SELECT *" + " FROM film film JOIN language lang ON film.language_id = lang.id"
 				+ " WHERE film.title LIKE ? OR film.description LIKE ?";
 		try {
 
@@ -166,11 +166,9 @@ public class DatabaseAccessorObject implements DatabaseAccessor {
 				film.setReleaseYear(fr.getInt("release_year"));
 				film.setRating(fr.getString("rating"));
 				film.setLanguage(fr.getString("lang.name"));
-				
 				findActorsByFilmId(fr.getInt("id"));
-//				findActorById(fr.getInt("id"));
+				film.setCast(findActorsByFilmId(fr.getInt("film.id")));
 				filmListKeyword.add(film);
-				
 
 			}
 
@@ -188,4 +186,41 @@ public class DatabaseAccessorObject implements DatabaseAccessor {
 
 	}
 
+	public Film createFilm(Film film) {
+		
+		System.out.println("Enter film name to add: ");
+		String filmName = sc.next();
+//		System.out.println("Enter the language: ");
+//		String langName = sc.next();
+
+		Connection conn = null;
+
+		try {
+			conn = DriverManager.getConnection(URL, user, pass);
+		    conn.setAutoCommit(false);
+		    
+		    String sql = "INSERT INTO film (title, language_id) VALUES (?, 1) ";
+		    PreparedStatement stmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+		    stmt.setString(1, film.getTitle());
+		    stmt.setInt(2, film.getLanguageId());
+		    
+		} catch (SQLException e) {
+			// Something went wrong.
+			System.err.println("Error during inserts.");
+			e.printStackTrace();
+			// Need to rollback, which also throws SQLException.
+			if (conn != null) {
+				try {
+					conn.rollback();
+				} catch (SQLException e1) {
+					System.err.println("Error rolling back.");
+					e1.printStackTrace();
+				}
+
+			}
+
+		}
+		return film;
+
+	}
 }

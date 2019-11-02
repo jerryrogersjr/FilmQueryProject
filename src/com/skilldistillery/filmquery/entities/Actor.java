@@ -1,10 +1,13 @@
 package com.skilldistillery.filmquery.entities;
 
-public class Actor {
+import java.util.List;
+
+public class Actor extends Film {
 
 	private int id;
 	private String firstName;
 	private String lastName;
+	private List<Film> films;
 
 	public Actor(int id, String firstName, String lastName) {
 		super();
@@ -79,5 +82,18 @@ public class Actor {
 			return false;
 		return true;
 	}
+
+	public List<Film> getFilms() {
+		return films;
+	}
+
+	public void setFilms(List<Film> films) {
+		this.films = films;
+	}
+
+//	public void setFilms(List<Actor> findActorsByFilmId) {
+//		// TODO Auto-generated method stub
+//		this.films = findActorsByFilmId;
+//	}
 
 }
